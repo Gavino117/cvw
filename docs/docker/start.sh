@@ -3,10 +3,7 @@ if [ -n "$USE_PODMAN" ]; then
 else
     DOCKER_EXEC=$(which docker)
 fi
-if [ -n "$USE_PODMAN" ]; then
-       CVW_MOUNT=$(pwd)/../../
-fi
-echo ${CVW_MOUNT}
+CVW_MOUNT=${CVW_MOUNT:$(pwd)/../../}
 USERNAME="cad"
 
 UBUNTU_WALLY_HASH=$(${DOCKER_EXEC} images --quiet wallysoc/ubuntu_wally)
@@ -31,7 +28,7 @@ elif [ -z $TOOLCHAINS_HASH ]; then
     exit 1
 else
     echo "Get ${TOOLCHAINS_HASH} for toolchains_wally"
-    ${DOCKER_EXEC} run --user root -it --rm -v ${CVW_MOUNT}:/home/${USERNAME}/cvw wallysoc/toolchains_wally
+    ${DOCKER_EXEC} run -it --rm -v ${CVW_MOUNT}:/home/${USERNAME}/cvw wallysoc/toolchains_wally
 fi
 
 echo "Successfully reach the end"
